@@ -1,1 +1,1 @@
-# statistical-approaches
+# Statistical Approaches
