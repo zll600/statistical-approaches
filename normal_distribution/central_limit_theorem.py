@@ -96,8 +96,8 @@ def visualize_clt_with_dice():
     plt.suptitle('Central Limit Theorem: Distribution of Dice Roll Averages',
                  fontsize=14, y=1.00)
     plt.tight_layout()
-    plt.savefig("clt_dice.png", dpi=150)
-    print("\nSaved: clt_dice.png")
+    # plt.savefig("clt_dice.png", dpi=150)
+    # print("\nSaved: clt_dice.png")
     plt.show()
 
     print("\nNotice how as n increases:")
@@ -163,8 +163,8 @@ def clt_with_different_distributions():
 
     plt.suptitle('CLT Works for ANY Distribution!', fontsize=14, y=1.00)
     plt.tight_layout()
-    plt.savefig("clt_different_distributions.png", dpi=150)
-    print("Saved: clt_different_distributions.png")
+    # plt.savefig("clt_different_distributions.png", dpi=150)
+    # print("Saved: clt_different_distributions.png")
     plt.show()
 
 
@@ -218,8 +218,8 @@ def effect_of_sample_size():
 
     plt.suptitle('Effect of Sample Size on CLT Convergence', fontsize=14)
     plt.tight_layout()
-    plt.savefig("clt_sample_size_effect.png", dpi=150)
-    print("Saved: clt_sample_size_effect.png")
+    # plt.savefig("clt_sample_size_effect.png", dpi=150)
+    # print("Saved: clt_sample_size_effect.png")
     plt.show()
 
 
@@ -255,8 +255,8 @@ def standard_error_demonstration():
                      fontsize=8)
 
     plt.tight_layout()
-    plt.savefig("standard_error.png", dpi=150)
-    print("Saved: standard_error.png")
+    # plt.savefig("standard_error.png", dpi=150)
+    # print("Saved: standard_error.png")
     plt.show()
 
     print("\nKey insight:")
@@ -325,8 +325,8 @@ def real_world_example():
              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
 
     plt.tight_layout()
-    plt.savefig("clt_real_world.png", dpi=150)
-    print("Saved: clt_real_world.png")
+    # plt.savefig("clt_real_world.png", dpi=150)
+    # print("Saved: clt_real_world.png")
     plt.show()
 
     print(f"\nCLT predicts: sample means ~ N({predicted_mean}, {predicted_se:.3f})")
