@@ -18,12 +18,23 @@ Run this file directly to launch the interactive visualizer:
 import sys
 import numpy as np
 from scipy import stats
-from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
-                                QHBoxLayout, QLabel, QSlider, QPushButton,
-                                QGroupBox, QGridLayout, QTextEdit)
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QSlider,
+    QPushButton,
+    QGroupBox,
+    QGridLayout,
+    QTextEdit,
+)
 from PySide6.QtCore import Qt
 import matplotlib
-matplotlib.use('QtAgg')
+
+matplotlib.use("QtAgg")
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -137,7 +148,7 @@ class NormalDistributionVisualizer(QMainWindow):
             ("Narrow Distribution", 0, 0.5),
             ("Shifted Right", 5, 1),
             ("Shifted Left", -5, 1),
-            ("IQ Scores", 100, 15)
+            ("IQ Scores", 100, 15),
         ]
 
         row, col = 0, 0
@@ -156,7 +167,9 @@ class NormalDistributionVisualizer(QMainWindow):
         # Sample generation button
         sample_btn = QPushButton("Generate Random Samples")
         sample_btn.clicked.connect(self.generate_samples)
-        sample_btn.setStyleSheet("background-color: #4CAF50; color: white; font-weight: bold; padding: 10px;")
+        sample_btn.setStyleSheet(
+            "background-color: #4CAF50; color: white; font-weight: bold; padding: 10px;"
+        )
         layout.addWidget(sample_btn)
 
         layout.addStretch()
@@ -201,7 +214,7 @@ class NormalDistributionVisualizer(QMainWindow):
         dist = stats.norm(self.mu, self.sigma)
 
         # Generate x values
-        x = np.linspace(self.mu - 4*self.sigma, self.mu + 4*self.sigma, 1000)
+        x = np.linspace(self.mu - 4 * self.sigma, self.mu + 4 * self.sigma, 1000)
         pdf = dist.pdf(x)
         cdf = dist.cdf(x)
 
@@ -210,45 +223,55 @@ class NormalDistributionVisualizer(QMainWindow):
         ax2 = self.figure.add_subplot(2, 1, 2)
 
         # Plot 1: PDF with shaded regions
-        ax1.plot(x, pdf, 'b-', linewidth=2, label='PDF')
-        ax1.fill_between(x, pdf, alpha=0.2, color='blue')
+        ax1.plot(x, pdf, "b-", linewidth=2, label="PDF")
+        ax1.fill_between(x, pdf, alpha=0.2, color="blue")
 
         # Shade 68-95-99.7 regions
         # 68% (±1σ)
         x_68 = x[(x >= self.mu - self.sigma) & (x <= self.mu + self.sigma)]
         pdf_68 = pdf[(x >= self.mu - self.sigma) & (x <= self.mu + self.sigma)]
-        ax1.fill_between(x_68, pdf_68, alpha=0.4, color='yellow', label='68% (±1σ)')
+        ax1.fill_between(x_68, pdf_68, alpha=0.4, color="yellow", label="68% (±1σ)")
 
         # 95% (±2σ)
-        x_95_low = x[(x >= self.mu - 2*self.sigma) & (x < self.mu - self.sigma)]
-        pdf_95_low = pdf[(x >= self.mu - 2*self.sigma) & (x < self.mu - self.sigma)]
-        x_95_high = x[(x > self.mu + self.sigma) & (x <= self.mu + 2*self.sigma)]
-        pdf_95_high = pdf[(x > self.mu + self.sigma) & (x <= self.mu + 2*self.sigma)]
-        ax1.fill_between(x_95_low, pdf_95_low, alpha=0.4, color='orange', label='95% (±2σ)')
-        ax1.fill_between(x_95_high, pdf_95_high, alpha=0.4, color='orange')
+        x_95_low = x[(x >= self.mu - 2 * self.sigma) & (x < self.mu - self.sigma)]
+        pdf_95_low = pdf[(x >= self.mu - 2 * self.sigma) & (x < self.mu - self.sigma)]
+        x_95_high = x[(x > self.mu + self.sigma) & (x <= self.mu + 2 * self.sigma)]
+        pdf_95_high = pdf[(x > self.mu + self.sigma) & (x <= self.mu + 2 * self.sigma)]
+        ax1.fill_between(
+            x_95_low, pdf_95_low, alpha=0.4, color="orange", label="95% (±2σ)"
+        )
+        ax1.fill_between(x_95_high, pdf_95_high, alpha=0.4, color="orange")
 
         # Mark mean and standard deviations
-        ax1.axvline(self.mu, color='red', linestyle='--', linewidth=2, label=f'μ={self.mu:.2f}')
+        ax1.axvline(
+            self.mu, color="red", linestyle="--", linewidth=2, label=f"μ={self.mu:.2f}"
+        )
         for i in [-2, -1, 1, 2]:
-            ax1.axvline(self.mu + i*self.sigma, color='gray', linestyle=':', alpha=0.5)
+            ax1.axvline(
+                self.mu + i * self.sigma, color="gray", linestyle=":", alpha=0.5
+            )
 
-        ax1.set_xlabel('x')
-        ax1.set_ylabel('Probability Density')
-        ax1.set_title(f'Normal Distribution PDF: N(μ={self.mu:.2f}, σ={self.sigma:.2f})')
-        ax1.legend(loc='upper right')
+        ax1.set_xlabel("x")
+        ax1.set_ylabel("Probability Density")
+        ax1.set_title(
+            f"Normal Distribution PDF: N(μ={self.mu:.2f}, σ={self.sigma:.2f})"
+        )
+        ax1.legend(loc="upper right")
         ax1.grid(True, alpha=0.3)
 
         # Plot 2: CDF
-        ax2.plot(x, cdf, 'g-', linewidth=2, label='CDF')
-        ax2.axhline(0.5, color='red', linestyle='--', alpha=0.5, label='50%')
-        ax2.axhline(0.68, color='orange', linestyle='--', alpha=0.5, label='68%')
-        ax2.axhline(0.95, color='purple', linestyle='--', alpha=0.5, label='95%')
-        ax2.axvline(self.mu, color='red', linestyle='--', linewidth=2, label=f'μ={self.mu:.2f}')
+        ax2.plot(x, cdf, "g-", linewidth=2, label="CDF")
+        ax2.axhline(0.5, color="red", linestyle="--", alpha=0.5, label="50%")
+        ax2.axhline(0.68, color="orange", linestyle="--", alpha=0.5, label="68%")
+        ax2.axhline(0.95, color="purple", linestyle="--", alpha=0.5, label="95%")
+        ax2.axvline(
+            self.mu, color="red", linestyle="--", linewidth=2, label=f"μ={self.mu:.2f}"
+        )
 
-        ax2.set_xlabel('x')
-        ax2.set_ylabel('Cumulative Probability')
-        ax2.set_title('Cumulative Distribution Function (CDF)')
-        ax2.legend(loc='upper left')
+        ax2.set_xlabel("x")
+        ax2.set_ylabel("Cumulative Probability")
+        ax2.set_title("Cumulative Distribution Function (CDF)")
+        ax2.legend(loc="upper left")
         ax2.grid(True, alpha=0.3)
 
         self.figure.tight_layout()
@@ -263,13 +286,17 @@ class NormalDistributionVisualizer(QMainWindow):
         mean = self.mu
         median = self.mu
         mode = self.mu
-        variance = self.sigma ** 2
+        variance = self.sigma**2
         std_dev = self.sigma
 
         # Calculate probabilities
         prob_1sigma = dist.cdf(self.mu + self.sigma) - dist.cdf(self.mu - self.sigma)
-        prob_2sigma = dist.cdf(self.mu + 2*self.sigma) - dist.cdf(self.mu - 2*self.sigma)
-        prob_3sigma = dist.cdf(self.mu + 3*self.sigma) - dist.cdf(self.mu - 3*self.sigma)
+        prob_2sigma = dist.cdf(self.mu + 2 * self.sigma) - dist.cdf(
+            self.mu - 2 * self.sigma
+        )
+        prob_3sigma = dist.cdf(self.mu + 3 * self.sigma) - dist.cdf(
+            self.mu - 3 * self.sigma
+        )
 
         # Percentiles
         p25 = dist.ppf(0.25)
@@ -288,14 +315,14 @@ class NormalDistributionVisualizer(QMainWindow):
 <b>Std Dev (σ):</b> {std_dev:.4f}<br>
 
 <h3>Empirical Rule (68-95-99.7)</h3>
-<b>P(μ - σ < X < μ + σ):</b> {prob_1sigma*100:.2f}%<br>
+<b>P(μ - σ < X < μ + σ):</b> {prob_1sigma * 100:.2f}%<br>
 <b>Range:</b> [{mean - std_dev:.2f}, {mean + std_dev:.2f}]<br>
 <br>
-<b>P(μ - 2σ < X < μ + 2σ):</b> {prob_2sigma*100:.2f}%<br>
-<b>Range:</b> [{mean - 2*std_dev:.2f}, {mean + 2*std_dev:.2f}]<br>
+<b>P(μ - 2σ < X < μ + 2σ):</b> {prob_2sigma * 100:.2f}%<br>
+<b>Range:</b> [{mean - 2 * std_dev:.2f}, {mean + 2 * std_dev:.2f}]<br>
 <br>
-<b>P(μ - 3σ < X < μ + 3σ):</b> {prob_3sigma*100:.2f}%<br>
-<b>Range:</b> [{mean - 3*std_dev:.2f}, {mean + 3*std_dev:.2f}]<br>
+<b>P(μ - 3σ < X < μ + 3σ):</b> {prob_3sigma * 100:.2f}%<br>
+<b>Range:</b> [{mean - 3 * std_dev:.2f}, {mean + 3 * std_dev:.2f}]<br>
 
 <h3>Percentiles</h3>
 <b>25th:</b> {p25:.4f}<br>
@@ -319,27 +346,44 @@ class NormalDistributionVisualizer(QMainWindow):
         ax = sample_figure.add_subplot(1, 1, 1)
 
         # Histogram of samples
-        ax.hist(samples, bins=50, density=True, alpha=0.7, color='skyblue',
-                edgecolor='black', label=f'Samples (n={n_samples})')
+        ax.hist(
+            samples,
+            bins=50,
+            density=True,
+            alpha=0.7,
+            color="skyblue",
+            edgecolor="black",
+            label=f"Samples (n={n_samples})",
+        )
 
         # Overlay theoretical PDF
         x = np.linspace(samples.min(), samples.max(), 100)
-        ax.plot(x, stats.norm(self.mu, self.sigma).pdf(x), 'r-',
-                linewidth=2, label='Theoretical PDF')
+        ax.plot(
+            x,
+            stats.norm(self.mu, self.sigma).pdf(x),
+            "r-",
+            linewidth=2,
+            label="Theoretical PDF",
+        )
 
         # Add statistics
         sample_mean = np.mean(samples)
         sample_std = np.std(samples, ddof=1)
 
-        stats_text = f'Sample μ = {sample_mean:.2f}\nSample σ = {sample_std:.2f}\n'
-        stats_text += f'Theoretical μ = {self.mu:.2f}\nTheoretical σ = {self.sigma:.2f}'
-        ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,
-                verticalalignment='top',
-                bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+        stats_text = f"Sample μ = {sample_mean:.2f}\nSample σ = {sample_std:.2f}\n"
+        stats_text += f"Theoretical μ = {self.mu:.2f}\nTheoretical σ = {self.sigma:.2f}"
+        ax.text(
+            0.02,
+            0.98,
+            stats_text,
+            transform=ax.transAxes,
+            verticalalignment="top",
+            bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.8),
+        )
 
-        ax.set_xlabel('Value')
-        ax.set_ylabel('Density')
-        ax.set_title(f'Random Samples from N(μ={self.mu:.2f}, σ={self.sigma:.2f})')
+        ax.set_xlabel("Value")
+        ax.set_ylabel("Density")
+        ax.set_title(f"Random Samples from N(μ={self.mu:.2f}, σ={self.sigma:.2f})")
         ax.legend()
         ax.grid(True, alpha=0.3)
 
@@ -361,8 +405,12 @@ class NormalDistributionVisualizer(QMainWindow):
 
         # Add button to return to main view
         return_btn = QPushButton("Return to Distribution View")
-        return_btn.clicked.connect(lambda: self.return_to_main_view(old_canvas, sample_canvas, return_btn))
-        return_btn.setStyleSheet("background-color: #2196F3; color: white; font-weight: bold; padding: 10px;")
+        return_btn.clicked.connect(
+            lambda: self.return_to_main_view(old_canvas, sample_canvas, return_btn)
+        )
+        return_btn.setStyleSheet(
+            "background-color: #2196F3; color: white; font-weight: bold; padding: 10px;"
+        )
         right_layout.addWidget(return_btn)
 
     def return_to_main_view(self, old_canvas, sample_canvas, button):
@@ -390,7 +438,7 @@ def main():
     app = QApplication(sys.argv)
 
     # Set application style
-    app.setStyle('Fusion')
+    app.setStyle("Fusion")
 
     visualizer = NormalDistributionVisualizer()
     visualizer.show()
@@ -399,9 +447,9 @@ def main():
 
 
 if __name__ == "__main__":
-    print("="*60)
+    print("=" * 60)
     print("LAUNCHING INTERACTIVE NORMAL DISTRIBUTION VISUALIZER")
-    print("="*60)
+    print("=" * 60)
     print("\nFeatures:")
     print("  - Adjust μ (mean) and σ (standard deviation) with sliders")
     print("  - Real-time PDF and CDF visualization")
@@ -409,6 +457,6 @@ if __name__ == "__main__":
     print("  - Try preset distributions")
     print("  - Generate and visualize random samples")
     print("\nEnjoy exploring normal distributions!")
-    print("="*60)
+    print("=" * 60)
 
     main()

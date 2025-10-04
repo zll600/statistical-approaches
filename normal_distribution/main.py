@@ -11,10 +11,10 @@ import os
 
 
 def print_banner():
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print(" " * 15 + "STATISTICAL APPROACHES")
     print(" " * 10 + "Interactive Learning Modules")
-    print("="*70)
+    print("=" * 70)
 
 
 def print_menu():
@@ -52,15 +52,12 @@ def run_module(module_name):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     module_path = os.path.join(script_dir, f"{module_name}.py")
 
-    print(f"\n{'='*70}")
+    print(f"\n{'=' * 70}")
     print(f"Running: {module_name}")
-    print(f"{'='*70}\n")
+    print(f"{'=' * 70}\n")
 
     try:
-        result = subprocess.run(
-            [sys.executable, module_path],
-            check=True
-        )
+        result = subprocess.run([sys.executable, module_path], check=True)
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
         print(f"\n[ERROR] Error running module: {e}")
@@ -79,24 +76,24 @@ def run_all_modules():
         ("analysis", "Analysis & Testing for Normality"),
     ]
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("RUNNING ALL MODULES SEQUENTIALLY")
-    print("="*70)
+    print("=" * 70)
     print("\nNote: Close each plot window to proceed to the next module.")
     print("Press Enter to continue...")
     input()
 
     for module_name, display_name in modules:
-        print(f"\n{'='*70}")
+        print(f"\n{'=' * 70}")
         print(f"Module: {display_name}")
-        print(f"{'='*70}")
+        print(f"{'=' * 70}")
         if not run_module(module_name):
             print(f"\n[WARNING] Stopped at {display_name} due to error.")
             return
 
-    print("\n" + "="*70)
+    print("\n" + "=" * 70)
     print("[OK] All modules completed successfully!")
-    print("="*70)
+    print("=" * 70)
 
 
 def main():

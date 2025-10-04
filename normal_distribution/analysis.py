@@ -38,7 +38,7 @@ def create_qq_plot(data, title="Q-Q Plot"):
     # Create Q-Q plot
     stats.probplot(data, dist="norm", plot=ax)
 
-    ax.set_title(title, fontsize=14, weight='bold')
+    ax.set_title(title, fontsize=14, weight="bold")
     ax.grid(True, alpha=0.3)
 
     return fig
@@ -48,9 +48,9 @@ def test_normality_multiple_methods(data, name="Data"):
     """
     Run multiple normality tests on the data.
     """
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"NORMALITY TESTS FOR: {name}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     # Descriptive statistics
     print(f"\nDescriptive Statistics:")
@@ -66,9 +66,9 @@ def test_normality_multiple_methods(data, name="Data"):
     print(f"  Kurtosis near 0: normal tail behavior")
 
     # Statistical tests
-    print(f"\n{'-'*60}")
+    print(f"\n{'-' * 60}")
     print("Statistical Tests for Normality:")
-    print(f"{'-'*60}")
+    print(f"{'-' * 60}")
 
     # 1. Shapiro-Wilk Test (good for small to medium samples)
     shapiro_stat, shapiro_p = stats.shapiro(data)
@@ -81,7 +81,7 @@ def test_normality_multiple_methods(data, name="Data"):
         print(f"   Result: REJECT H0 (data is likely NOT normal)")
 
     # 2. Anderson-Darling Test
-    anderson_result = stats.anderson(data, dist='norm')
+    anderson_result = stats.anderson(data, dist="norm")
     print(f"\n2. Anderson-Darling Test:")
     print(f"   Statistic: {anderson_result.statistic:.6f}")
     print(f"   Critical values: {anderson_result.critical_values}")
@@ -95,7 +95,7 @@ def test_normality_multiple_methods(data, name="Data"):
     # First normalize the data
     mean = np.mean(data)
     std = np.std(data, ddof=1)
-    ks_stat, ks_p = stats.kstest((data - mean) / std, 'norm')
+    ks_stat, ks_p = stats.kstest((data - mean) / std, "norm")
     print(f"\n3. Kolmogorov-Smirnov Test:")
     print(f"   Statistic: {ks_stat:.6f}")
     print(f"   P-value: {ks_p:.6f}")
@@ -104,7 +104,7 @@ def test_normality_multiple_methods(data, name="Data"):
     else:
         print(f"   Result: REJECT H0 (data is likely NOT normal)")
 
-    print(f"\n{'='*60}\n")
+    print(f"\n{'=' * 60}\n")
 
 
 def compare_distributions():
@@ -121,7 +121,7 @@ def compare_distributions():
         ("Normal", np.random.normal(100, 15, 1000)),
         ("Slightly Skewed", np.random.gamma(5, 2, 1000)),
         ("Heavily Skewed", np.random.exponential(2, 1000)),
-        ("Uniform", np.random.uniform(0, 100, 1000))
+        ("Uniform", np.random.uniform(0, 100, 1000)),
     ]
 
     fig, axes = plt.subplots(4, 3, figsize=(15, 14))
@@ -129,43 +129,53 @@ def compare_distributions():
     for idx, (name, data) in enumerate(datasets):
         # Column 1: Histogram
         ax = axes[idx, 0]
-        ax.hist(data, bins=30, density=True, alpha=0.7,
-                color='skyblue', edgecolor='black')
+        ax.hist(
+            data, bins=30, density=True, alpha=0.7, color="skyblue", edgecolor="black"
+        )
 
         # Overlay fitted normal curve
         mu, sigma = np.mean(data), np.std(data, ddof=1)
         x = np.linspace(data.min(), data.max(), 100)
-        ax.plot(x, stats.norm(mu, sigma).pdf(x), 'r-', linewidth=2,
-                label='Fitted Normal')
+        ax.plot(
+            x, stats.norm(mu, sigma).pdf(x), "r-", linewidth=2, label="Fitted Normal"
+        )
 
-        ax.set_title(f'{name} - Histogram')
-        ax.set_ylabel('Density')
+        ax.set_title(f"{name} - Histogram")
+        ax.set_ylabel("Density")
         ax.legend()
         ax.grid(True, alpha=0.3)
 
         # Column 2: Q-Q Plot
         ax = axes[idx, 1]
         stats.probplot(data, dist="norm", plot=ax)
-        ax.set_title(f'{name} - Q-Q Plot')
+        ax.set_title(f"{name} - Q-Q Plot")
         ax.grid(True, alpha=0.3)
 
         # Column 3: Box Plot
         ax = axes[idx, 2]
         ax.boxplot(data, vert=True)
-        ax.set_title(f'{name} - Box Plot')
-        ax.set_ylabel('Value')
+        ax.set_title(f"{name} - Box Plot")
+        ax.set_ylabel("Value")
         ax.grid(True, alpha=0.3)
 
         # Add statistics text
         shapiro_stat, shapiro_p = stats.shapiro(data)
         skewness = stats.skew(data)
-        text = f'Skew: {skewness:.2f}\nShapiro p: {shapiro_p:.4f}'
-        axes[idx, 0].text(0.02, 0.98, text, transform=axes[idx, 0].transAxes,
-                          verticalalignment='top',
-                          bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+        text = f"Skew: {skewness:.2f}\nShapiro p: {shapiro_p:.4f}"
+        axes[idx, 0].text(
+            0.02,
+            0.98,
+            text,
+            transform=axes[idx, 0].transAxes,
+            verticalalignment="top",
+            bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.8),
+        )
 
-    plt.suptitle('Comparing Distributions: Visual and Statistical Assessment',
-                 fontsize=14, weight='bold')
+    plt.suptitle(
+        "Comparing Distributions: Visual and Statistical Assessment",
+        fontsize=14,
+        weight="bold",
+    )
     plt.tight_layout()
     plt.savefig("compare_distributions.png", dpi=150)
     print("Saved: compare_distributions.png")
@@ -190,9 +200,9 @@ def sample_size_effect_on_tests():
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     axes = axes.flatten()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("EFFECT OF SAMPLE SIZE ON NORMALITY TESTS")
-    print("="*60)
+    print("=" * 60)
     print("\nUsing t-distribution with df=10 (slightly non-normal)")
 
     for idx, n in enumerate(sample_sizes):
@@ -200,31 +210,41 @@ def sample_size_effect_on_tests():
 
         ax = axes[idx]
         stats.probplot(data, dist="norm", plot=ax)
-        ax.set_title(f'n = {n}')
+        ax.set_title(f"n = {n}")
         ax.grid(True, alpha=0.3)
 
         # Run Shapiro-Wilk test
         shapiro_stat, shapiro_p = stats.shapiro(data)
 
         # Add test results
-        text = f'Shapiro-Wilk:\np = {shapiro_p:.6f}\n'
+        text = f"Shapiro-Wilk:\np = {shapiro_p:.6f}\n"
         if shapiro_p > 0.05:
-            text += 'Appears normal'
-            color = 'lightgreen'
+            text += "Appears normal"
+            color = "lightgreen"
         else:
-            text += 'Not normal'
-            color = 'lightcoral'
+            text += "Not normal"
+            color = "lightcoral"
 
-        ax.text(0.02, 0.98, text, transform=ax.transAxes,
-                verticalalignment='top',
-                bbox=dict(boxstyle='round', facecolor=color, alpha=0.8))
+        ax.text(
+            0.02,
+            0.98,
+            text,
+            transform=ax.transAxes,
+            verticalalignment="top",
+            bbox=dict(boxstyle="round", facecolor=color, alpha=0.8),
+        )
 
         print(f"\nn = {n}:")
         print(f"  Shapiro-Wilk p-value: {shapiro_p:.6f}")
-        print(f"  Conclusion: {'Appears normal' if shapiro_p > 0.05 else 'Significantly non-normal'}")
+        print(
+            f"  Conclusion: {'Appears normal' if shapiro_p > 0.05 else 'Significantly non-normal'}"
+        )
 
-    plt.suptitle('Sample Size Effect: Same Distribution, Different Sample Sizes',
-                 fontsize=14, weight='bold')
+    plt.suptitle(
+        "Sample Size Effect: Same Distribution, Different Sample Sizes",
+        fontsize=14,
+        weight="bold",
+    )
     plt.tight_layout()
     plt.savefig("sample_size_effect.png", dpi=150)
     print("\nSaved: sample_size_effect.png")
@@ -254,7 +274,7 @@ def demonstrate_transformations():
         ("Original", data, lambda x: x),
         ("Log", data[data > 0], np.log),
         ("Square Root", data, np.sqrt),
-        ("Box-Cox", data[data > 0], lambda x: stats.boxcox(x)[0])
+        ("Box-Cox", data[data > 0], lambda x: stats.boxcox(x)[0]),
     ]
 
     for idx, (name, d, transform) in enumerate(transformations):
@@ -262,16 +282,22 @@ def demonstrate_transformations():
 
         # Top row: Histogram
         ax = axes[0, idx]
-        ax.hist(transformed, bins=30, density=True, alpha=0.7,
-                color='skyblue', edgecolor='black')
+        ax.hist(
+            transformed,
+            bins=30,
+            density=True,
+            alpha=0.7,
+            color="skyblue",
+            edgecolor="black",
+        )
 
         # Fit and overlay normal
         mu, sigma = np.mean(transformed), np.std(transformed, ddof=1)
         x = np.linspace(transformed.min(), transformed.max(), 100)
-        ax.plot(x, stats.norm(mu, sigma).pdf(x), 'r-', linewidth=2)
+        ax.plot(x, stats.norm(mu, sigma).pdf(x), "r-", linewidth=2)
 
-        ax.set_title(f'{name}')
-        ax.set_ylabel('Density')
+        ax.set_title(f"{name}")
+        ax.set_ylabel("Density")
         ax.grid(True, alpha=0.3)
 
         # Bottom row: Q-Q plot
@@ -283,21 +309,29 @@ def demonstrate_transformations():
         shapiro_stat, shapiro_p = stats.shapiro(transformed)
         skewness = stats.skew(transformed)
 
-        text = f'Skew: {skewness:.2f}\np: {shapiro_p:.4f}'
-        axes[0, idx].text(0.02, 0.98, text, transform=axes[0, idx].transAxes,
-                          verticalalignment='top',
-                          bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+        text = f"Skew: {skewness:.2f}\np: {shapiro_p:.4f}"
+        axes[0, idx].text(
+            0.02,
+            0.98,
+            text,
+            transform=axes[0, idx].transAxes,
+            verticalalignment="top",
+            bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.8),
+        )
 
-    plt.suptitle('Transforming Non-Normal Data to Approximate Normality',
-                 fontsize=14, weight='bold')
+    plt.suptitle(
+        "Transforming Non-Normal Data to Approximate Normality",
+        fontsize=14,
+        weight="bold",
+    )
     plt.tight_layout()
     plt.savefig("transformations.png", dpi=150)
     print("Saved: transformations.png")
     plt.show()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("TRANSFORMATION RESULTS")
-    print("="*60)
+    print("=" * 60)
 
     for name, d, transform in transformations:
         transformed = transform(d)
@@ -307,7 +341,9 @@ def demonstrate_transformations():
         print(f"\n{name}:")
         print(f"  Skewness: {skewness:.4f}")
         print(f"  Shapiro-Wilk p-value: {shapiro_p:.6f}")
-        print(f"  Conclusion: {'Appears normal' if shapiro_p > 0.05 else 'Still non-normal'}")
+        print(
+            f"  Conclusion: {'Appears normal' if shapiro_p > 0.05 else 'Still non-normal'}"
+        )
 
 
 def real_world_example():
@@ -326,24 +362,26 @@ def real_world_example():
     datasets = [
         ("Men Only", men_heights),
         ("Women Only", women_heights),
-        ("Combined (Bimodal)", combined_heights)
+        ("Combined (Bimodal)", combined_heights),
     ]
 
     for idx, (name, data) in enumerate(datasets):
         # Histogram
         ax = axes[0, idx]
-        ax.hist(data, bins=30, density=True, alpha=0.7,
-                color='skyblue', edgecolor='black')
+        ax.hist(
+            data, bins=30, density=True, alpha=0.7, color="skyblue", edgecolor="black"
+        )
 
         # Fit normal
         mu, sigma = np.mean(data), np.std(data, ddof=1)
         x = np.linspace(data.min(), data.max(), 100)
-        ax.plot(x, stats.norm(mu, sigma).pdf(x), 'r-', linewidth=2,
-                label='Fitted Normal')
+        ax.plot(
+            x, stats.norm(mu, sigma).pdf(x), "r-", linewidth=2, label="Fitted Normal"
+        )
 
-        ax.set_title(f'{name}')
-        ax.set_xlabel('Height (cm)')
-        ax.set_ylabel('Density')
+        ax.set_title(f"{name}")
+        ax.set_xlabel("Height (cm)")
+        ax.set_ylabel("Density")
         ax.legend()
         ax.grid(True, alpha=0.3)
 
@@ -354,21 +392,29 @@ def real_world_example():
 
         # Statistics
         shapiro_stat, shapiro_p = stats.shapiro(data)
-        text = f'n={len(data)}\nμ={mu:.1f}\nσ={sigma:.1f}\np={shapiro_p:.4f}'
-        axes[0, idx].text(0.02, 0.98, text, transform=axes[0, idx].transAxes,
-                          verticalalignment='top',
-                          bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+        text = f"n={len(data)}\nμ={mu:.1f}\nσ={sigma:.1f}\np={shapiro_p:.4f}"
+        axes[0, idx].text(
+            0.02,
+            0.98,
+            text,
+            transform=axes[0, idx].transAxes,
+            verticalalignment="top",
+            bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.8),
+        )
 
-    plt.suptitle('Real World Example: Importance of Understanding Your Data',
-                 fontsize=14, weight='bold')
+    plt.suptitle(
+        "Real World Example: Importance of Understanding Your Data",
+        fontsize=14,
+        weight="bold",
+    )
     plt.tight_layout()
     plt.savefig("real_world_heights.png", dpi=150)
     print("Saved: real_world_heights.png")
     plt.show()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("REAL-WORLD EXAMPLE: HEIGHTS")
-    print("="*60)
+    print("=" * 60)
 
     for name, data in datasets:
         test_normality_multiple_methods(data, name)
@@ -395,12 +441,12 @@ if __name__ == "__main__":
     print("\n4. Real-world example: heights...")
     real_world_example()
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("KEY TAKEAWAYS:")
-    print("="*60)
+    print("=" * 60)
     print("1. Use multiple methods to assess normality (visual + statistical)")
     print("2. Q-Q plots are your friend - they show HOW data deviates from normal")
     print("3. Larger samples are more sensitive to small deviations")
     print("4. Consider transformations for skewed data")
     print("5. Understand your data - don't just apply tests blindly!")
-    print("="*60)
+    print("=" * 60)

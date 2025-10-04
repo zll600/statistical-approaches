@@ -28,9 +28,9 @@ __author__ = "Statistical Approaches"
 
 # Make it easy to run modules
 __all__ = [
-    'basics',
-    'central_limit_theorem',
-    'standard_normal',
-    'analysis',
-    'visualizer'
+    "basics",
+    "central_limit_theorem",
+    "standard_normal",
+    "analysis",
+    "visualizer",
 ]
